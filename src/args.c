@@ -45,7 +45,6 @@ void showHelp(const char* programName, ProgramMode mode){
         printf("  -h, --help\t\tShow this help\n");
         printf("  -f, --file FILE\tSpecify the file to process\n");
     }else if (mode == MODE_HELP){
-        printf("Usage: %s [OPTION] \n", programName);
         printf("Example: %s -f file.txt\n", programName);
     }
 }
