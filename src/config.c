@@ -47,15 +47,15 @@ int readConfig(Config *config, const char *path)
     extension = strrchr(path, '.');
     if(extension == NULL || strcmp(extension, ".txt") != 0)
     {
-        fprintf(stderr, "Error: configuration file must have .txt extension");
-        return 1;
+        fprintf(stderr, "Error: configuration file must have .txt extension\n");
+        return 0;
     }
 
     file = fopen(path, "r");
     if(file == NULL)
     {
         fprintf(stderr, "Error: could not open file %s\n", path);
-        return 1;
+        return 0;
     }
 
     while (fgets(line, sizeof(line), file))
@@ -78,7 +78,7 @@ int readConfig(Config *config, const char *path)
         if(separator == NULL)
         {
             fprintf(stderr, "Error: invalid line in configuration file: %s\n", line);
-            return 1;
+            return 0;
         }
 
         *separator = '\0';
