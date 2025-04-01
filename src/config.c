@@ -41,9 +41,8 @@ int readConfig(Config *config, const char *path)
     FILE *file;
     char line[256];
     char *extension;
-    // int number_found = 0;
-    // int threads_found = 0;
-    printf("path: %s\n", path);
+    bool number_found = false;
+    bool threads_found = false;
 
     extension = strrchr(path, '.');
     if(extension == NULL || strcmp(extension, ".txt") != 0)
@@ -89,8 +88,42 @@ int readConfig(Config *config, const char *path)
         trim(key);
         trim(value);
 
+        if(strcmp(key, "numbers_per_thread") == 0)
+        {
+            config->numbers_per_thread = atoi(value);
+            if( config->numbers_per_thread <= 0)
+            {
+                fprintf(stderr, "Error: invalid value for numbers_per_thread: %s\n", value);
+                fclose(file);
+                return 0;
+            }
+            number_found = true;
+        } else if (strcmp(key, "thread_num") == 0)
+        {
+            config->thread_num = atoi(value);
+            if( config->thread_num <= 0)
+            {
+                fprintf(stderr, "Error: invalid value for thread_numb: %s\n", value);
+                fclose(file);
+                return 0;
+            }
+            threads_found = true;
+        } else
+        {
+            fprintf(stderr, "Error: invalid key in configuration file: %s\n", key);
+            fclose(file);
+            return 0;
+        }
+
     }
 
     fclose(file);
-    return 0;
+
+    if (!number_found || !threads_found)
+    {
+        fprintf(stderr, "Error: numbers_per_thread not found in configuration file\n");
+        return 0;
+    }
+
+    return 1;
 }

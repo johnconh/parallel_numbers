@@ -16,7 +16,15 @@ int main (int argc, char *argv[]) {
         showHelp(argv[0], MODE_HELP);
         return 1;
     }
-    readConfig(&config, args->filename);
+    if (!readConfig(&config, args->filename)){
+        freeArgs(args);
+        return 1;
+    }
+
+    printf("Configuration loaded:\n");
+    printf("-> Numbers per thread: %d\n", config.numbers_per_thread);
+    printf("-> Number of threads:  %d\n", config.thread_num);
+
     freeArgs(args);
     return 0;
 }
