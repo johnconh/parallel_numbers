@@ -1,11 +1,11 @@
 NAME = parallel_numbers
 
 CC = gcc
-CFLAGS= -Wall -Wextra  -Werror -pthread -g -I ./includes
+CFLAGS= -Wall -Wextra  -Werror -pthread -g3  -I ./includes
 
-SRCDIR = ./srcs/
+SRCDIR = ./src/
 OBJDIR = ./objs/
-INCSDIR = ./includes/
+INCSDIR = ./incs/
 
 SRCS = $(wildcard $(SRCDIR)*.c)
 OBJS = $(patsubst $(SRCDIR)%.c, $(OBJDIR)%.o, $(SRCS))
