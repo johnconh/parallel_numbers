@@ -1,7 +1,7 @@
 NAME = parallel_numbers
 
 CC = gcc
-CFLAGS= -Wall -Wextra  -Werror -pthread -g3  -I ./includes
+CFLAGS= -Wall -Wextra  -pthread -g3  -fsanitize=address -I ./includes
 
 SRCDIR = ./src/
 OBJDIR = ./objs/

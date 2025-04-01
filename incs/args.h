@@ -18,8 +18,9 @@ typedef struct{
 
 // Procesa los argumentos de la línea de comandos
 // Devuelve una estructura ProgramArgs con los argumentos procesados
-ProgramArgs parseArgs(int argc, char* argv[]);
+ProgramArgs* parseArgs(int argc, char* argv[]);
 
 // Muestra la ayuda del programa
 void showHelp(const char* programMode, ProgramMode mode);
+void freeArgs(ProgramArgs* args);
 #endif

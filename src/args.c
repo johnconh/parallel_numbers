@@ -1,9 +1,14 @@
 #include "../incs/args.h"
 
-ProgramArgs parseArgs(int argc, char* argv[]){
-    ProgramArgs args;
-    args.mode = MODE_ERROR;
-    args.filename = NULL;
+ProgramArgs* parseArgs(int argc, char* argv[]){
+    ProgramArgs* args = (ProgramArgs*)malloc(sizeof(ProgramArgs));
+    if(!args){
+        fprintf(stderr, "Error args: Memory allocation error\n");
+        return args;
+    }
+
+    args->mode = MODE_ERROR;
+    args->filename = NULL;
 
     if(argc < 2){
         fprintf(stderr, "Error: No arguments\n");
@@ -11,7 +16,7 @@ ProgramArgs parseArgs(int argc, char* argv[]){
     }
 
     if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0){
-        args.mode = MODE_HELP;
+        args->mode = MODE_HELP;
         return args;
     } else if (strcmp(argv[1], "-f") == 0 || strcmp(argv[1], "--file") == 0){
         if(argc < 3){
@@ -19,11 +24,12 @@ ProgramArgs parseArgs(int argc, char* argv[]){
             return args;
         }
 
-        args.mode = MODE_FILE;
-        args.filename =(char *)malloc(strlen(argv[2]) + 1);
-        if(!args.filename){
+        args->mode = MODE_FILE;
+        args->filename = strdup(argv[2]);
+        if(!args->filename){
             fprintf(stderr, "Error args.filename: Memory allocation error\n");
-            return args;
+            freeArgs(args);
+            return NULL;
         }
         return args;
     }
@@ -41,5 +47,14 @@ void showHelp(const char* programName, ProgramMode mode){
     }else if (mode == MODE_HELP){
         printf("Usage: %s [OPTION] \n", programName);
         printf("Example: %s -f file.txt\n", programName);
+    }
+}
+
+void freeArgs(ProgramArgs* args){
+    if(args){
+        if(args->filename){
+            free(args->filename);
+        }
+        free(args);
     }
 }
