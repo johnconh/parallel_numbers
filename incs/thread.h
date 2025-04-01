@@ -24,4 +24,6 @@ void *thread_function(void* arg);
 // Crea y ejecuta los hilos
 int run_threads(Config* config, List* even_list, List* odd_list);
 
+void merge_sort(List* list);
+
 #endif

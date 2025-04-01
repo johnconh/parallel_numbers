@@ -41,6 +41,8 @@ int main (int argc, char *argv[]) {
         return 1;
     }
 
+    merge_sort(&even_list);
+    merge_sort(&old_list);
     // Imprimir listas
     listPrint(&even_list, "Even numbers");
     listPrint(&old_list, "Odd numbers");

@@ -86,3 +86,82 @@ int run_threads(Config* config, List* even_list, List* odd_list){
     free(thread_data);
     return 1;
 }
+ 
+// Función que fusiona dos listas
+List *merge(List* left, List* right){
+    List* result = (List*)malloc(sizeof(List));
+    initList(result);
+
+    Node* a = left->head;
+    Node* b = right->head;
+    Node* tail = NULL; // Puntero al último nodo de la lista resultante
+
+    while (a && b){
+        if (a->data < b->data){
+            if(result->head == NULL){
+                result->head = a;
+                tail = result->head;
+            }else{
+                tail->next = a;
+                tail = tail->next;
+            }
+            a = a->next;
+        } else {
+            if(result->head == NULL){
+                result->head = b;
+                tail = result->head;
+            }else{
+                tail->next = b;
+                tail = tail->next;
+            }
+            b = b->next;
+        }
+    }
+
+    if(a) tail->next = a;
+    if(b) tail->next = b;
+    return result;
+}
+
+// Función que divide una lista en dos
+void split_list(Node* head, List* left, List* right)
+{
+    // Si la lista está vacía o tiene un solo elemento
+    if (!head || !head->next) {  
+        left->head = head;
+        right->head = NULL;
+        return;
+    }
+
+    Node* slow = head;
+    Node* fast = head->next;
+
+    while (fast){
+        fast = fast->next;
+        if (fast){
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    left->head = head;
+    right->head = slow->next;
+    slow->next = NULL; // Separar las dos listas
+}
+
+// Función que ordena una lista de forma ascendente
+void merge_sort (List* list){
+    if (!list->head || !list->head->next) return;
+    List left, right;
+    initList(&left);
+    initList(&right);
+
+    split_list(list->head, &left, &right);
+
+    merge_sort(&left);
+    merge_sort(&right);
+
+    List* result = merge(&left, &right);
+    list->head = result->head;
+    free(result);
+}
